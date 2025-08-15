@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#login-container {
+    text-align: center;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#game-container {
+    display: flex;
+    gap: 1rem;
+    width: 95%;
+    max-width: 1400px;
+}
+
+#game-info, #chat-container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#game-info {
+    flex-basis: 200px;
+}
+
+#canvas-container {
+    flex-grow: 1;
+}
+
+#drawing-canvas {
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 8px;
+}
+
+#chat-container {
+    flex-basis: 250px;
+}
+
+#chat-messages {
+    flex-grow: 1;
+    border: 1px solid #eee;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    overflow-y: auto;
+    height: 400px;
+}
+
+input[type="text"] {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 1rem);
+}
+
+button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

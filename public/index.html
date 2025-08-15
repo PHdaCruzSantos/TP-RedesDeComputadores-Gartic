@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gartic - Jogo de Desenho</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="login-container">
+        <h2>Conectar ao Jogo</h2>
+        <input type="text" id="nickname-input" placeholder="Digite seu apelido">
+        <button id="connect-btn">Conectar</button>
+    </div>
+
+    <div id="game-container" class="hidden">
+        <div id="game-info">
+            <h3>Jogadores</h3>
+            <ul id="player-list"></ul>
+            <button id="start-game-btn">Iniciar Jogo</button>
+            <div id="word-display">
+                <p>A palavra é: <span id="secret-word"></span></p>
+                <p>Tempo: <span id="timer">60</span>s</p>
+            </div>
+        </div>
+        <div id="canvas-container">
+            <canvas id="drawing-canvas" width="800" height="600"></canvas>
+        </div>
+        <div id="chat-container">
+            <h3>Chat e Palpites</h3>
+            <div id="chat-messages"></div>
+            <input type="text" id="guess-input" placeholder="Digite seu palpite...">
+            <button id="guess-btn">Enviar</button>
+        </div>
+    </div>
+
+    <!-- O script será compilado a partir do client.ts -->
+    <script src="client.js"></script>
+</body>
+</html>
