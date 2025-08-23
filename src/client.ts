@@ -175,9 +175,17 @@ connectBtn.addEventListener("click", () => {
     alert("Por favor, insira um apelido.");
     return;
   }
+
+  const wsUrl = prompt("Por favor, insira o endereço do servidor WebSocket (wss://...)", "");
+  if (!wsUrl || !wsUrl.startsWith("wss://")) {
+      alert("Endereço de WebSocket inválido. Deve começar com wss://");
+      return;
+  }
+
   myNickname = nickname;
 
-  ws = new WebSocket('ws://127.0.0.1:8080');
+  // Conecta ao endereço fornecido pelo usuário
+  ws = new WebSocket(wsUrl);
 
   ws.onopen = () => {
     console.log("Conectado ao servidor WebSocket!");
