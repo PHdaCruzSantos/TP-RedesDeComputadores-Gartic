@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-08-19T17:08:25.593Z",
+  "statistics": {
+    "totalConnections": 3,
+    "activeConnections": 0,
+    "totalMessages": 9,
+    "totalBytesTransferred": 498,
+    "tcpConnections": 0,
+    "wsConnections": 3,
+    "averageMessageSize": 55
+  },
+  "activePlayers": [],
+  "gameState": "LOBBY",
+  "currentDrawer": null
+}

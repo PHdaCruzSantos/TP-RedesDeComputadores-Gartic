@@ -17,8 +17,9 @@ type GameState = "LOBBY" | "IN_GAME" | "ROUND_OVER";
 // --- Variáveis Globais ---
 
 const players: Player[] = [];
-const TCP_PORT = 2004;
+const TCP_PORT = 2004; // ALterar para 2002 -> data de nascimento das crianças do grupo XDXD
 const WS_PORT = 8080;
+const HOST = "0.0.0.0"; // Escuta em todas as interfaces de rede disponíveis
 const ROUND_DURATION = 60000; // 60 segundos
 
 const wordList = [
@@ -215,7 +216,8 @@ function handleRegister(connection: ClientConnection, nickname: string) {
   };
 
   players.push(newPlayer);
-  console.log(`Jogador registrado: ${nickname} (ID: ${id})}`, connection);
+
+  console.log(`Jogador registrado: ${nickname} (ID: ${id})`, connection);
 
   sendMessage(connection, {
     status: "success",
@@ -299,11 +301,11 @@ const tcpServer = net.createServer((socket) => {
   });
 });
 
-tcpServer.listen(TCP_PORT, () => {
-  console.log(`Servidor TCP (gerenciamento) escutando na porta ${TCP_PORT}`);
+tcpServer.listen(TCP_PORT, HOST, () => {
+  console.log(`Servidor TCP (gerenciamento) escutando em ${HOST}:${TCP_PORT}`);
 });
 
-const wsServer = new WebSocketServer({ port: WS_PORT });
+const wsServer = new WebSocketServer({ port: WS_PORT, host: HOST });
 
 wsServer.on("connection", (ws) => {
   console.log("Novo cliente WebSocket conectado.");
@@ -315,4 +317,8 @@ wsServer.on("connection", (ws) => {
   });
 });
 
-console.log(`Servidor WebSocket (clientes web) escutando na porta ${WS_PORT}`);
+wsServer.on("listening", () => {
+  console.log(
+    `Servidor WebSocket (clientes web) escutando em ${HOST}:${WS_PORT}`
+  );
+});

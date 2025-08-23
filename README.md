@@ -1,92 +1,95 @@
-# Documentação do Projeto Gartic
+# Documentação do Projeto: Gartic Online
 
 ## 1. Visão Geral
 
-Este projeto é uma implementação de um jogo de desenho e adivinhação em tempo real, similar ao Gartic, construído com TypeScript. Ele utiliza um modelo cliente-servidor, onde um servidor Node.js gerencia a lógica do jogo e os clientes (jogadores em um navegador web) se conectam para participar.
+Este projeto é uma implementação de um jogo multiplayer online de desenho e adivinhação, similar ao Gartic, construído com TypeScript. Ele utiliza um modelo cliente-servidor, onde um servidor Node.js gerencia a lógica do jogo e os clientes (jogadores em um navegador web) se conectam para participar.
 
-A comunicação em tempo real, essencial para a jogabilidade, é realizada principalmente através de WebSockets, com uma infraestrutura de servidor TCP também presente.
+O objetivo principal foi criar uma aplicação de rede funcional, explorando a comunicação via Sockets e protocolos da camada de transporte como o TCP, conforme solicitado nas diretrizes do trabalho de Redes de Computadores.
 
-## 2. Arquitetura e Protocolos de Rede
+## 2. Como Executar e Jogar
 
-A comunicação é a espinha dorsal deste projeto. Entender como os diferentes componentes de rede funcionam é crucial.
+Existem duas maneiras de jogar: localmente em sua própria máquina ou online com amigos pela internet.
 
-### 2.1. TCP (Transmission Control Protocol)
-
-O TCP é um dos principais protocolos da Internet. Suas características são:
-
--   **Orientado à Conexão**: Antes de qualquer troca de dados, uma conexão estável (um "handshake") é estabelecida entre o cliente e o servidor.
--   **Confiável**: Garante que todos os pacotes de dados sejam entregues na ordem correta e sem erros. Se um pacote se perde, o TCP o reenvia.
-
-**No seu projeto:**
-
-1.  **Servidor TCP (Porta 2004)**: O arquivo `server.ts` cria um servidor TCP bruto usando a biblioteca `net` do Node.js. No código, ele é descrito como um servidor de "gerenciamento". Isso significa que ele poderia ser usado para conectar outros tipos de clientes (que não sejam navegadores) ou para tarefas administrativas. Atualmente, ele compartilha a mesma lógica de manipulação de mensagens que o servidor WebSocket.
-2.  **Base para WebSockets**: Mais importante ainda, **o TCP é o protocolo que dá base ao WebSocket**. Toda a comunicação WebSocket que acontece no jogo é, fundamentalmente, transportada dentro de pacotes TCP, garantindo a entrega confiável das mensagens do jogo.
-
-### 2.2. WebSocket (Porta 8080)
-
-O WebSocket é um protocolo de comunicação construído sobre o TCP. Ele foi projetado especificamente para a web.
-
--   **Conexão Persistente e Full-Duplex**: Diferente do ciclo de requisição-resposta do HTTP tradicional, o WebSocket mantém uma única conexão aberta entre o cliente e o servidor. Ambos podem enviar dados um ao outro a qualquer momento, de forma independente.
--   **Baixa Latência**: Como a conexão já está estabelecida, a troca de mensagens é extremamente rápida, o que é vital para jogos em tempo real onde cada milissegundo conta.
-
-**No seu projeto:**
-
--   O WebSocket é o **principal meio de comunicação para os jogadores no navegador**. O servidor (`ws` no Node.js) na porta 8080 lida com todas as ações do jogo:
-    -   Registro de novos jogadores.
-    -   Atualização da lista de jogadores no lobby.
-    -   Envio de coordenadas de desenho do desenhista para outros jogadores.
-    -   Recebimento de palpites dos jogadores.
-    -   Sincronização do estado do jogo (início/fim de rodada, pontuações).
-
-### 2.3. Mensagens Baseadas em JSON
-
-Tanto sobre a conexão TCP quanto sobre a WebSocket, o projeto utiliza um protocolo de mensagens customizado baseado em JSON. Cada mensagem é um objeto com uma propriedade `action`, que informa ao receptor o que fazer.
-
-**Exemplo de Mensagem:**
-
-```json
-{
-  "action": "draw",
-  "data": {
-    "from": { "x": 10, "y": 20 },
-    "to": { "x": 11, "y": 21 }
-  }
-}
-```
-
-As principais ações (`action`) são: `register`, `start_game`, `draw`, `guess`, `update_players`, `game_start`, etc.
-
-### 2.4. E o UDP?
-
-O **UDP (User Datagram Protocol)** é outro protocolo de transporte comum. Ele é "não orientado à conexão" e não garante a entrega ou a ordem dos pacotes. É como enviar uma carta: você envia e torce para que chegue. Sua vantagem é a velocidade e a baixa sobrecarga.
-
-**Este projeto não utiliza UDP.** Embora seja comum em jogos de ação (para enviar atualizações de posição de alta frequência, onde perder um pacote não é crítico), para um jogo como Gartic, a confiabilidade do TCP/WebSocket é mais importante para garantir que todos os desenhos e palpites cheguem corretamente.
-
-## 3. Estrutura do Projeto
-
--   `src/server.ts`: O coração do backend. Gerencia o estado do jogo, a lista de jogadores, as palavras, os timers e a comunicação com todos os clientes (via TCP e WebSocket).
--   `src/client.ts`: O coração do frontend. Controla a interface do usuário, o canvas de desenho, os inputs do jogador e a comunicação com o servidor WebSocket.
--   `public/index.html`: A estrutura da página web que o jogador vê.
--   `public/client.js`: O arquivo JavaScript **compilado** a partir de `src/client.ts`. É este arquivo que o `index.html` realmente executa.
--   `package.json`: Define as dependências (como `ws` e `typescript`) e os scripts (`start`, `build`).
--   `tsconfig.json`: Arquivo de configuração que instrui o compilador TypeScript sobre como converter os arquivos `.ts` em `.js`.
-
-## 4. Fluxo do Jogo
-
-1.  **Conexão**: O jogador abre o `index.html`, digita um apelido e clica em "Conectar".
-2.  **Registro**: O `client.ts` estabelece uma conexão WebSocket com o servidor e envia uma mensagem `{ "action": "register", ... }`.
-3.  **Resposta do Servidor**: O servidor (após a correção) recebe a mensagem, adiciona o jogador à lista e responde com `{ "status": "success" }`.
-4.  **Mudança de Tela**: O cliente recebe a resposta de sucesso e exibe a tela principal do jogo. O servidor transmite a lista de jogadores atualizada para todos.
-5.  **Início do Jogo**: Um jogador clica em "Iniciar Jogo". O servidor muda o estado para `IN_GAME`, escolhe um desenhista e uma palavra secreta.
-6.  **Desenho e Palpites**:
-    -   O desenhista recebe a palavra e pode desenhar. Cada traço é enviado ao servidor como uma mensagem `draw`.
-    -   O servidor retransmite (`broadcast`) os dados do desenho para os outros jogadores.
-    -   Os outros jogadores veem o desenho se formando e enviam seus palpites com a mensagem `guess`.
-7.  **Fim da Rodada**: Se alguém acerta, o servidor declara o fim da rodada, atualiza as pontuações e inicia o processo para a próxima rodada.
-
-## 5. Como Executar
+### 2.1. Jogando Localmente
 
 1.  **Instalar dependências**: `npm install`
 2.  **Compilar o código**: `npm run build` (Este passo é **essencial** sempre que você modificar os arquivos `.ts`).
 3.  **Iniciar o servidor**: `npm start`
-4.  **Jogar**: Abra o arquivo `public/index.html` em um ou mais navegadores.
+4.  **Jogar**: Abra o arquivo `public/index.html` em um ou mais navegadores. Cada aba do navegador funcionará como um jogador diferente.
+
+### 2.2. Jogando Online com Amigos (Usando `ngrok`)
+
+Para que outras pessoas na internet possam se conectar ao seu servidor (que está rodando no seu computador), usamos o `ngrok` para criar um "túnel" seguro da internet para a sua máquina.
+
+**Passo 1: Configurar o `ngrok`**
+
+1.  Instale o `ngrok` (seja baixando ou via gerenciador de pacotes).
+2.  Crie um arquivo de configuração em `~/.config/ngrok/ngrok.yml` com o seguinte conteúdo para gerenciar os dois túneis necessários:
+    ```yaml
+    version: "2"
+    tunnels:
+      site:
+        proto: http
+        addr: 8000
+      jogo:
+        proto: http
+        addr: 8080
+    ```
+
+**Passo 2: Iniciar os Servidores e o `ngrok`**
+
+Você precisará de **3 terminais** rodando ao mesmo tempo:
+
+1.  **Terminal 1 (Servidor do Jogo):**
+    ```bash
+    npm start
+    ```
+2.  **Terminal 2 (Servidor Web):**
+    ```bash
+    python3 -m http.server --directory public 8000
+    ```
+3.  **Terminal 3 (`ngrok`):**
+    ```bash
+    ngrok start --all
+    ```
+
+**Passo 3: Conectar e Jogar**
+
+1.  No terminal do `ngrok`, você verá duas URLs públicas.
+2.  Compartilhe a URL do túnel `site` com seus amigos. Eles devem abri-la no navegador.
+3.  Ao se conectar no jogo, uma caixa de diálogo pedirá o endereço do servidor. Todos devem inserir a URL do túnel `jogo`, trocando o prefixo `https://` por `wss://`.
+
+## 3. Arquitetura e Protocolos de Rede
+
+### 3.1. Atendendo aos Requisitos de Sockets TCP
+
+O trabalho prático exige o uso de "Sockets TCP" para a comunicação. O projeto atende a este requisito de duas maneiras fundamentais:
+
+1.  **Servidor TCP Explícito (Porta 2004):** O arquivo `server.ts` instancia um servidor TCP puro utilizando a biblioteca `net` do Node.js. Este servidor escuta na porta `2004` (conforme o exemplo do trabalho) e está preparado para receber conexões TCP diretas. Isso demonstra o conhecimento e a aplicação direta da tecnologia de Sockets TCP.
+
+2.  **WebSocket sobre TCP (Porta 8080):** A principal comunicação do jogo, realizada via WebSockets, é construída **sobre o protocolo TCP**. Quando um cliente se conecta ao servidor WebSocket, ocorre o seguinte:
+    *   Um handshake HTTP/S é realizado para iniciar a conexão.
+    *   A conexão é "atualizada" para uma conexão TCP persistente e bidirecional.
+    *   Todos os dados do jogo (desenhos, palpites, etc.) são encapsulados em "frames" WebSocket, que por sua vez são transportados de forma confiável por pacotes TCP.
+
+Portanto, toda a lógica do jogo depende da confiabilidade e da conexão orientada do TCP, cumprindo integralmente o requisito central do trabalho.
+
+### 3.2. Componentes da Aplicação
+
+*   **Servidor do Jogo (`server.ts`):** O cérebro da aplicação. Roda na porta `8080` (WebSocket) e `2004` (TCP). Gerencia o estado do jogo, jogadores, rodadas e a comunicação em tempo real.
+*   **Servidor Web (`python3`):** Um servidor simples e temporário na porta `8000`, cuja única função é entregar os arquivos do frontend (`index.html`, `client.js`, etc.) para os navegadores dos jogadores.
+*   **Cliente (`client.ts`):** O frontend que roda no navegador. É responsável pela interface, por capturar as ações do usuário e pela comunicação via WebSocket com o Servidor do Jogo.
+
+### 3.3. O Papel do `ngrok`
+
+O `ngrok` atua como uma ponte entre a internet pública e os servidores rodando localmente no seu computador. Ele resolve os problemas de IP privado, firewalls e NAT, criando URLs públicas para os seus serviços locais. No nosso caso, ele expõe tanto o Servidor Web (para que os jogadores possam baixar o jogo) quanto o Servidor do Jogo (para que o jogo possa se conectar e funcionar).
+
+## 4. Estrutura do Projeto
+
+-   `src/server.ts`: Código-fonte do backend.
+-   `src/client.ts`: Código-fonte do frontend.
+-   `public/`: Contém os arquivos web estáticos.
+    -   `index.html`: Estrutura da página.
+    -   `client.js`: **Arquivo compilado** a partir de `src/client.ts`.
+-   `package.json`: Define dependências e scripts do projeto.
+-   `tsconfig.json`: Configurações do compilador TypeScript.
