@@ -1,5 +1,57 @@
 import * as net from "net";
 import { WebSocketServer, WebSocket } from "ws";
+import * as fs from "fs";
+import * as path from "path";
+import { IncomingMessage } from "http";
+
+// --- Logger Setup ---
+const logsDir = path.join(__dirname, "../logs");
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
+const logFile = path.join(logsDir, "connections.log");
+const csvLogFile = path.join(logsDir, "user_registry.csv");
+const csvHeader = "timestamp,nickname,userId,connectionType,ipAddress,port\n";
+
+// Initialize CSV log if it doesn't exist
+if (!fs.existsSync(csvLogFile)) {
+  fs.writeFileSync(csvLogFile, csvHeader);
+}
+
+function logConnection(message: string) {
+  const timestamp = new Date().toISOString();
+  const logMessage = `[${timestamp}] ${message}\n`;
+  try {
+    fs.appendFileSync(logFile, logMessage);
+    console.log(message); // Also log to console for real-time view
+  } catch (error) {
+    console.error("Failed to write to log file:", error);
+  }
+}
+
+function logUserToCsv(player: Player) {
+  const timestamp = new Date().toISOString();
+  let connectionType = "Unknown";
+  let ipAddress = "N/A";
+  let port: number | string = "N/A";
+
+  if (player.connection instanceof net.Socket) {
+    connectionType = "TCP";
+    ipAddress = player.connection.remoteAddress || "N/A";
+    port = player.connection.remotePort || "N/A";
+  } else if (player.connection instanceof WebSocket) {
+    connectionType = "WebSocket";
+    ipAddress = wsIpMap.get(player.connection) || "N/A";
+    port = "N/A"; // Client-side port is not directly available/relevant for WebSockets
+  }
+
+  const csvRow = `${timestamp},${player.nickname},${player.id},${connectionType},${ipAddress},${port}\n`;
+  try {
+    fs.appendFileSync(csvLogFile, csvRow);
+  } catch (error) {
+    console.error("Failed to write to CSV log file:", error);
+  }
+}
 
 // --- Tipos e Interfaces ---
 
@@ -17,6 +69,7 @@ type GameState = "LOBBY" | "IN_GAME" | "ROUND_OVER";
 // --- Variáveis Globais ---
 
 const players: Player[] = [];
+const wsIpMap = new Map<WebSocket, string>(); // Map to store WebSocket IPs
 const TCP_PORT = 2004; // ALterar para 2002 -> data de nascimento das crianças do grupo XDXD
 const WS_PORT = 8080;
 const HOST = "0.0.0.0"; // Escuta em todas as interfaces de rede disponíveis
@@ -123,7 +176,7 @@ function startGame() {
   const wordIndex = Math.floor(Math.random() * wordList.length);
   game.currentWord = wordList[wordIndex];
 
-  console.log(
+  logConnection(
     `Nova rodada! Desenhista: ${game.currentDrawer.nickname}, Palavra: ${game.currentWord}`
   );
 
@@ -159,7 +212,7 @@ function stopGame(reason: string) {
   game.currentDrawer = null;
   game.currentWord = "";
   broadcast({ action: "game_stop", reason });
-  console.log(`Jogo parado: ${reason}`);
+  logConnection(`Jogo parado: ${reason}`);
 }
 
 function handleGuess(player: Player, word: string) {
@@ -183,7 +236,7 @@ function handleGuess(player: Player, word: string) {
       word: game.currentWord,
     });
     broadcastPlayerList();
-    console.log(`${player.nickname} acertou a palavra: ${game.currentWord}`);
+    logConnection(`${player.nickname} acertou a palavra: ${game.currentWord}`);
     startNextRound();
   } else {
     broadcast({
@@ -217,7 +270,8 @@ function handleRegister(connection: ClientConnection, nickname: string) {
 
   players.push(newPlayer);
 
-  console.log(`Jogador registrado: ${nickname} (ID: ${id})`, connection);
+  logConnection(`Jogador registrado: ${nickname} (ID: ${id})`);
+  logUserToCsv(newPlayer); // Add user to CSV registry
 
   sendMessage(connection, {
     status: "success",
@@ -232,7 +286,7 @@ function handleDisconnect(connection: ClientConnection) {
 
   if (playerIndex !== -1) {
     const disconnectedPlayer = players.splice(playerIndex, 1)[0];
-    console.log(`Jogador desconectado: ${disconnectedPlayer.nickname}`);
+    logConnection(`Jogador desconectado: ${disconnectedPlayer.nickname}`);
 
     if (
       game.state === "IN_GAME" &&
@@ -248,9 +302,9 @@ function handleDisconnect(connection: ClientConnection) {
 function handleMessage(connection: ClientConnection, data: Buffer | string) {
   try {
     const message = JSON.parse(data.toString());
-    if (message.action !== "draw") {
-      console.log("Mensagem recebida:", message);
-    }
+    // if (message.action !== "draw") {
+    //   console.log("Mensagem recebida:", message);
+    // }
 
     if (message.action === "register") {
       handleRegister(connection, message.nickname);
@@ -278,7 +332,7 @@ function handleMessage(connection: ClientConnection, data: Buffer | string) {
         handleGuess(player, message.word);
         break;
       default:
-        console.log(`Ação desconhecida: ${message.action}`);
+        // console.log(`Ação desconhecida: ${message.action}`);
         sendMessage(connection, { error: "Ação desconhecida" });
     }
   } catch (error) {
@@ -290,35 +344,46 @@ function handleMessage(connection: ClientConnection, data: Buffer | string) {
 // --- Servidores TCP e WebSocket ---
 
 const tcpServer = net.createServer((socket) => {
-  console.log(
-    `Novo cliente TCP conectado: ${socket.remoteAddress}:${socket.remotePort}`
-  );
+  const clientInfo = `TCP client from ${socket.remoteAddress}:${socket.remotePort}`;
+  logConnection(`Nova conexão: ${clientInfo}`);
+
   socket.on("data", (data) => handleMessage(socket, data));
-  socket.on("close", () => handleDisconnect(socket));
+  socket.on("close", () => {
+    logConnection(`Conexão fechada: ${clientInfo}`);
+    handleDisconnect(socket);
+  });
   socket.on("error", (err) => {
-    console.error(`Erro no socket TCP: ${err.message}`);
+    logConnection(`Erro na conexão ${clientInfo}: ${err.message}`);
     handleDisconnect(socket);
   });
 });
 
 tcpServer.listen(TCP_PORT, HOST, () => {
-  console.log(`Servidor TCP (gerenciamento) escutando em ${HOST}:${TCP_PORT}`);
+  logConnection(`Servidor TCP escutando em ${HOST}:${TCP_PORT}`);
 });
 
 const wsServer = new WebSocketServer({ port: WS_PORT, host: HOST });
 
-wsServer.on("connection", (ws) => {
-  console.log("Novo cliente WebSocket conectado.");
+wsServer.on("connection", (ws: WebSocket, req: IncomingMessage) => {
+  const clientIp = req.socket.remoteAddress || "N/A";
+  wsIpMap.set(ws, clientIp); // Store IP for later retrieval
+  logConnection(`Nova conexão WebSocket de ${clientIp}`);
+
   ws.on("message", (data) => handleMessage(ws, data.toString()));
-  ws.on("close", () => handleDisconnect(ws));
+  ws.on("close", () => {
+    logConnection(`Conexão WebSocket fechada de ${clientIp}`);
+    wsIpMap.delete(ws); // Clean up map on disconnect
+    handleDisconnect(ws);
+  });
   ws.on("error", (err) => {
-    console.error(`Erro no WebSocket: ${err.message}`);
+    logConnection(`Erro na conexão WebSocket de ${clientIp}: ${err.message}`);
+    wsIpMap.delete(ws); // Clean up map on error
     handleDisconnect(ws);
   });
 });
 
 wsServer.on("listening", () => {
-  console.log(
+  logConnection(
     `Servidor WebSocket (clientes web) escutando em ${HOST}:${WS_PORT}`
   );
 });

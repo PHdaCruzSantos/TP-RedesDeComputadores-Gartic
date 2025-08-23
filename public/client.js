@@ -71,14 +71,12 @@ function handleGameStart(message) {
         }
     }, 1000);
 }
-
 function handleYourTurn(message) {
     secretWordSpan.textContent = message.word;
     isMyTurn = true;
     guessInput.disabled = true;
     alert("Sua vez de desenhar! A palavra \u00E9: ".concat(message.word));
 }
-
 function resetGameView(reason) {
     clearClientTimer();
     wordDisplay.classList.add("hidden");
