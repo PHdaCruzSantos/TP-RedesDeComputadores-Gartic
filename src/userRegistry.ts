@@ -27,7 +27,6 @@ export function logUserRegistration(data: UserRegistryData) {
   ensureCsvFileExists();
 
   const timestamp = new Date().toISOString();
-  // O 'N/A' para a porta é tratado aqui, caso a porta não seja encontrada
   const port = data.port ?? "N/A";
   const csvRow = `${timestamp},${data.nickname},${data.userId},${data.connectionType},${data.ipAddress},${port}\n`;
 

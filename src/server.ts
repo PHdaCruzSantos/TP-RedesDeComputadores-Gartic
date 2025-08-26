@@ -3,55 +3,8 @@ import { WebSocketServer, WebSocket } from "ws";
 import * as fs from "fs";
 import * as path from "path";
 import { IncomingMessage } from "http";
-
-// --- Logger Setup ---
-const logsDir = path.join(__dirname, "../logs");
-if (!fs.existsSync(logsDir)) {
-  fs.mkdirSync(logsDir, { recursive: true });
-}
-const logFile = path.join(logsDir, "connections.log");
-const csvLogFile = path.join(logsDir, "user_registry.csv");
-const csvHeader = "timestamp,nickname,userId,connectionType,ipAddress,port\n";
-
-// Initialize CSV log if it doesn't exist
-if (!fs.existsSync(csvLogFile)) {
-  fs.writeFileSync(csvLogFile, csvHeader);
-}
-
-function logConnection(message: string) {
-  const timestamp = new Date().toISOString();
-  const logMessage = `[${timestamp}] ${message}\n`;
-  try {
-    fs.appendFileSync(logFile, logMessage);
-    console.log(message); // Also log to console for real-time view
-  } catch (error) {
-    console.error("Failed to write to log file:", error);
-  }
-}
-
-function logUserToCsv(player: Player) {
-  const timestamp = new Date().toISOString();
-  let connectionType = "Unknown";
-  let ipAddress = "N/A";
-  let port: number | string = "N/A";
-
-  if (player.connection instanceof net.Socket) {
-    connectionType = "TCP";
-    ipAddress = player.connection.remoteAddress || "N/A";
-    port = player.connection.remotePort || "N/A";
-  } else if (player.connection instanceof WebSocket) {
-    connectionType = "WebSocket";
-    ipAddress = wsIpMap.get(player.connection) || "N/A";
-    port = "N/A"; // Client-side port is not directly available/relevant for WebSockets
-  }
-
-  const csvRow = `${timestamp},${player.nickname},${player.id},${connectionType},${ipAddress},${port}\n`;
-  try {
-    fs.appendFileSync(csvLogFile, csvRow);
-  } catch (error) {
-    console.error("Failed to write to CSV log file:", error);
-  }
-}
+import { logEvent } from "./connectionLogger";
+import { logUserRegistration } from "./userRegistry";
 
 // --- Tipos e Interfaces ---
 
@@ -63,6 +16,8 @@ interface Player {
   connection: ClientConnection;
   score: number;
   wins: number;
+  ipAddress?: string;
+  port?: number;
 }
 
 type GameState = "LOBBY" | "IN_GAME" | "ROUND_OVER";
@@ -70,7 +25,8 @@ type GameState = "LOBBY" | "IN_GAME" | "ROUND_OVER";
 // --- Variáveis Globais ---
 
 const players: Player[] = [];
-const wsIpMap = new Map<WebSocket, string>(); // Map to store WebSocket IPs
+const wsIpMap = new Map<WebSocket, string>();
+const wsPortMap = new Map<WebSocket, number>();
 const TCP_PORT = 2002; // ALterar para 2002 -> data de nascimento das crianças do grupo XDXD
 const WS_PORT = 8080;
 const HOST = "0.0.0.0"; // Escuta em todas as interfaces de rede disponíveis
@@ -82,9 +38,11 @@ try {
   const wordsFilePath = path.join(__dirname, "words.json");
   const wordsFileContent = fs.readFileSync(wordsFilePath, "utf-8");
   wordList = JSON.parse(wordsFileContent);
-  logConnection(
-    `${wordList.length} palavras carregadas do arquivo words.json.`
-  );
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "info",
+    message: `${wordList.length} palavras carregadas do arquivo words.json.`,
+  });
 } catch (error) {
   console.error("Erro ao carregar a lista de palavras:", error);
   // Fallback para uma lista padrão caso o arquivo falhe
@@ -98,7 +56,11 @@ try {
     "Elefante",
     "Girafa",
   ];
-  logConnection(`Usando lista de palavras padrão devido a um erro.`);
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "error",
+    message: `Usando lista de palavras padrão devido a um erro.`,
+  });
 }
 
 let game: {
@@ -162,83 +124,87 @@ function clearRoundTimer() {
 }
 
 function endGame(winners: Player[]) {
-    clearRoundTimer();
+  clearRoundTimer();
 
-    // Cria um ranking final ordenado por pontuação
-    const finalRanking = [...players]
-        .sort((a, b) => b.score - a.score)
-        .map(p => ({ nickname: p.nickname, score: p.score }));
+  // Cria um ranking final ordenado por pontuação
+  const finalRanking = [...players]
+    .sort((a, b) => b.score - a.score)
+    .map((p) => ({ nickname: p.nickname, score: p.score }));
 
-    let title = "";
-    let logMessage = "";
+  let title = "";
+  let logMessage = "";
 
-    if (winners.length === 1) {
-        title = `Fim de Jogo! O campeão é ${winners[0].nickname}!`;
-        logMessage = `Jogo finalizado. Vencedor: ${winners[0].nickname}`;
-    } else {
-        const winnerNames = winners.map(w => w.nickname).join(', ');
-        title = `Fim de Jogo! Houve um empate entre ${winnerNames}!`;
-        logMessage = `Jogo finalizado. Empate entre: ${winnerNames}`;
+  if (winners.length === 1) {
+    title = `Fim de Jogo! O campeão é ${winners[0].nickname}!`;
+    logMessage = `Jogo finalizado. Vencedor: ${winners[0].nickname}.`;
+  } else {
+    const winnerNames = winners.map((w) => w.nickname).join(", ");
+    title = `Fim de Jogo! Houve um empate entre ${winnerNames}!`;
+    logMessage = `Jogo finalizado. Empate entre: ${winnerNames}.`;
+  }
+
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "game_event",
+    message: logMessage,
+  });
+
+  // Incrementa o contador de vitórias para os vencedores
+  winners.forEach((winner) => {
+    const playerInGame = players.find((p) => p.id === winner.id);
+    if (playerInGame) {
+      playerInGame.wins += 1;
     }
+  });
 
-    // Incrementa o contador de vitórias para os vencedores
-    winners.forEach(winner => {
-        const playerInGame = players.find(p => p.id === winner.id);
-        if (playerInGame) {
-            playerInGame.wins += 1;
-        }
-    });
+  broadcast({
+    action: "game_over",
+    title: title,
+    ranking: finalRanking,
+  });
 
-    broadcast({ 
-        action: "game_over", 
-        title: title,
-        ranking: finalRanking
-    });
+  // Envia o resultado também como uma mensagem no chat
+  broadcast({
+    action: "chat_message",
+    from: "Servidor",
+    text: logMessage,
+    type: "system",
+  });
 
-    // Envia o resultado também como uma mensagem no chat
-    broadcast({ 
-        action: "chat_message", 
-        from: "Servidor", 
-        text: logMessage, 
-        type: "system"
-    });
-
-    logConnection(logMessage);
-
-    // Reseta o estado para o lobby, mantendo os jogadores e suas pontuações finais visíveis
-    game.state = "LOBBY";
-    game.currentDrawer = null;
-    game.currentWord = "";
-    playerQueue = [];
-    drawerIndex = -1;
-    maxScore = 0;
+  // Reseta o estado para o lobby, mantendo os jogadores e suas pontuações finais visíveis
+  game.state = "LOBBY";
+  game.currentDrawer = null;
+  game.currentWord = "";
+  playerQueue = [];
+  drawerIndex = -1;
+  maxScore = 0;
 }
 
 function checkForWinner(): boolean {
-    if (players.length === 0 || maxScore === 0) return false;
+  if (players.length === 0 || maxScore === 0) return false;
 
-    const highestScore = Math.max(...players.map(p => p.score));
+  const highestScore = Math.max(...players.map((p) => p.score));
 
-    if (highestScore >= maxScore) {
-        const winners = players.filter(p => p.score === highestScore);
-        if (winners.length > 0) {
-            endGame(winners);
-            return true; // O jogo terminou
-        }
+  if (highestScore >= maxScore) {
+    const winners = players.filter((p) => p.score === highestScore);
+    if (winners.length > 0) {
+      endGame(winners);
+      return true; // O jogo terminou
     }
-    return false; // O jogo continua
+  }
+  return false; // O jogo continua
 }
 
 function startNewRound() {
-    clearRoundTimer();
+  clearRoundTimer();
 
-    // Verifica se há um vencedor antes de iniciar uma nova rodada
-    if (checkForWinner()) return;
+  // Verifica se há um vencedor antes de iniciar uma nova rodada
+  if (checkForWinner()) return;
 
-    if (playerQueue.length < 2) {
-        stopGame("Jogadores insuficientes para continuar.");
-        return;
-    }
+  if (playerQueue.length < 2) {
+    stopGame("Jogadores insuficientes para continuar.");
+    return;
+  }
 
   broadcast({ action: "game_stop", reason: "" }); // Reseta a UI do cliente para a próxima rodada
 
@@ -264,9 +230,12 @@ function startNewRound() {
     game.currentWord = wordList[wordIndex];
     game.state = "IN_GAME";
 
-    logConnection(
-      `Nova rodada! Desenhista: ${game.currentDrawer.nickname}, Palavra: ${game.currentWord}`
-    );
+    logEvent({
+      timestamp: new Date().toISOString(),
+      eventType: "game_event",
+      message: `Nova rodada! Desenhista: ${game.currentDrawer.nickname}, Palavra: ${game.currentWord}`,
+      nickname: game.currentDrawer.nickname,
+    });
 
     // Informa ao desenhista qual é a sua palavra
     sendMessage(game.currentDrawer.connection, {
@@ -320,9 +289,12 @@ function startGame() {
   }
   drawerIndex = -1; // Começa em -1 para que o primeiro jogador seja o índice 0
 
-  logConnection(
-    `Jogo iniciado com ${players.length} jogadores. Meta de ${maxScore} pontos.`
-  );
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "game_event",
+    message: `Jogo iniciado com ${players.length} jogadores. Meta de ${maxScore} pontos.`,
+  });
+
   broadcast({
     action: "chat_message",
     from: "Servidor",
@@ -343,7 +315,11 @@ function stopGame(reason: string) {
   drawerIndex = -1;
   maxScore = 0;
   broadcast({ action: "game_stop", reason });
-  logConnection(`Jogo parado: ${reason}`);
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "game_event",
+    message: `Jogo parado: ${reason}`,
+  });
 }
 
 function handleGuess(player: Player, word: string) {
@@ -367,7 +343,13 @@ function handleGuess(player: Player, word: string) {
       word: game.currentWord,
     });
     broadcastPlayerList(); // Atualiza as pontuações para todos
-    logConnection(`${player.nickname} acertou a palavra: ${game.currentWord}`);
+    logEvent({
+      timestamp: new Date().toISOString(),
+      eventType: "game_event",
+      message: `${player.nickname} acertou a palavra: ${game.currentWord}`,
+      nickname: player.nickname,
+      playerId: player.id,
+    });
 
     // Verifica se o jogo acabou, senão, inicia a próxima rodada
     if (!checkForWinner()) {
@@ -385,7 +367,12 @@ function handleGuess(player: Player, word: string) {
 
 // --- Gerenciamento de Conexões e Mensagens ---
 
-function handleRegister(connection: ClientConnection, nickname: string) {
+function handleRegister(
+  connection: ClientConnection,
+  nickname: string,
+  ipAddress?: string,
+  port?: number
+) {
   if (!nickname) {
     sendMessage(connection, { error: "Apelido não pode ser vazio" });
     return;
@@ -402,6 +389,8 @@ function handleRegister(connection: ClientConnection, nickname: string) {
     connection,
     score: 0,
     wins: 0,
+    ipAddress,
+    port,
   };
 
   players.push(newPlayer);
@@ -416,8 +405,26 @@ function handleRegister(connection: ClientConnection, nickname: string) {
     });
   }
 
-  logConnection(`Jogador registrado: ${nickname} (ID: ${id})`);
-  logUserToCsv(newPlayer); // Add user to CSV registry
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "connection",
+    message: `Jogador registrado: ${nickname}`,
+    nickname: newPlayer.nickname,
+    playerId: newPlayer.id,
+    ipAddress: newPlayer.ipAddress,
+    connectionType:
+      newPlayer.connection instanceof net.Socket ? "TCP" : "WebSocket",
+  });
+
+  // Log to CSV
+  logUserRegistration({
+    nickname: newPlayer.nickname,
+    userId: newPlayer.id,
+    connectionType:
+      newPlayer.connection instanceof net.Socket ? "TCP" : "WebSocket",
+    ipAddress: newPlayer.ipAddress,
+    port: newPlayer.port,
+  });
 
   sendMessage(connection, {
     status: "success",
@@ -440,7 +447,23 @@ function handleDisconnect(connection: ClientConnection) {
       playerQueue.splice(queueIndex, 1);
     }
 
-    logConnection(`Jogador desconectado: ${disconnectedPlayer.nickname}`);
+    if (disconnectedPlayer.connection instanceof WebSocket) {
+      wsIpMap.delete(disconnectedPlayer.connection);
+      wsPortMap.delete(disconnectedPlayer.connection);
+    }
+
+    logEvent({
+      timestamp: new Date().toISOString(),
+      eventType: "disconnection",
+      message: `Jogador desconectado: ${disconnectedPlayer.nickname}`,
+      nickname: disconnectedPlayer.nickname,
+      playerId: disconnectedPlayer.id,
+      ipAddress: disconnectedPlayer.ipAddress,
+      connectionType:
+        disconnectedPlayer.connection instanceof net.Socket
+          ? "TCP"
+          : "WebSocket",
+    });
 
     if (
       game.state === "IN_GAME" &&
@@ -469,7 +492,15 @@ function handleMessage(connection: ClientConnection, data: Buffer | string) {
     // }
 
     if (message.action === "register") {
-      handleRegister(connection, message.nickname);
+      const ip =
+        connection instanceof net.Socket
+          ? connection.remoteAddress
+          : wsIpMap.get(connection as WebSocket);
+      const port =
+        connection instanceof net.Socket
+          ? connection.remotePort
+          : wsPortMap.get(connection as WebSocket);
+      handleRegister(connection, message.nickname, ip, port);
       return;
     }
 
@@ -484,8 +515,14 @@ function handleMessage(connection: ClientConnection, data: Buffer | string) {
         break;
       case "request_restart":
         if (game.state === "LOBBY") {
-            logConnection(`Jogador ${player.nickname} requisitou um novo jogo.`);
-            startGame();
+          logEvent({
+            timestamp: new Date().toISOString(),
+            eventType: "game_event",
+            message: `Jogador ${player.nickname} requisitou um novo jogo.`,
+            nickname: player.nickname,
+            playerId: player.id,
+          });
+          startGame();
         }
         break;
       case "draw":
@@ -512,22 +549,40 @@ function handleMessage(connection: ClientConnection, data: Buffer | string) {
 // --- Servidores TCP e WebSocket ---
 
 const tcpServer = net.createServer((socket) => {
-  const clientInfo = `TCP client from ${socket.remoteAddress}:${socket.remotePort}`;
-  logConnection(`Nova conexão: ${clientInfo}`);
+  const ip = socket.remoteAddress;
+  const port = socket.remotePort;
+  const clientInfo = `TCP client from ${ip}:${port}`;
+
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "connection",
+    message: `Nova conexão TCP: ${clientInfo}`,
+    ipAddress: ip,
+    connectionType: "TCP",
+  });
 
   socket.on("data", (data) => handleMessage(socket, data));
   socket.on("close", () => {
-    logConnection(`Conexão fechada: ${clientInfo}`);
     handleDisconnect(socket);
   });
   socket.on("error", (err) => {
-    logConnection(`Erro na conexão ${clientInfo}: ${err.message}`);
+    logEvent({
+      timestamp: new Date().toISOString(),
+      eventType: "error",
+      message: `Erro na conexão TCP ${clientInfo}: ${err.message}`,
+      ipAddress: ip,
+      connectionType: "TCP",
+    });
     handleDisconnect(socket);
   });
 });
 
 tcpServer.listen(TCP_PORT, HOST, () => {
-  logConnection(`Servidor TCP escutando em ${HOST}:${TCP_PORT}`);
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "info",
+    message: `Servidor TCP escutando em ${HOST}:${TCP_PORT}`,
+  });
 });
 
 const wsServer = new WebSocketServer({ port: WS_PORT, host: HOST });
@@ -542,24 +597,45 @@ wsServer.on("connection", (ws: WebSocket, req: IncomingMessage) => {
       : undefined) ||
     req.socket.remoteAddress ||
     "N/A";
-  wsIpMap.set(ws, clientIp); // Store IP for later retrieval
-  logConnection(`Nova conexão WebSocket de ${clientIp}`);
+  const clientPort = req.socket.remotePort;
+
+  wsIpMap.set(ws, clientIp);
+  if (clientPort) {
+    wsPortMap.set(ws, clientPort);
+  }
+
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "connection",
+    message: `Nova conexão WebSocket de ${clientIp}:${clientPort || "?"}`,
+    ipAddress: clientIp,
+    connectionType: "WebSocket",
+  });
 
   ws.on("message", (data) => handleMessage(ws, data.toString()));
   ws.on("close", () => {
-    logConnection(`Conexão WebSocket fechada de ${clientIp}`);
-    wsIpMap.delete(ws); // Clean up map on disconnect
+    wsIpMap.delete(ws);
+    wsPortMap.delete(ws);
     handleDisconnect(ws);
   });
   ws.on("error", (err) => {
-    logConnection(`Erro na conexão WebSocket de ${clientIp}: ${err.message}`);
-    wsIpMap.delete(ws); // Clean up map on error
+    logEvent({
+      timestamp: new Date().toISOString(),
+      eventType: "error",
+      message: `Erro na conexão WebSocket de ${clientIp}: ${err.message}`,
+      ipAddress: clientIp,
+      connectionType: "WebSocket",
+    });
+    wsIpMap.delete(ws);
+    wsPortMap.delete(ws);
     handleDisconnect(ws);
   });
 });
 
 wsServer.on("listening", () => {
-  logConnection(
-    `Servidor WebSocket (clientes web) escutando em ${HOST}:${WS_PORT}`
-  );
+  logEvent({
+    timestamp: new Date().toISOString(),
+    eventType: "info",
+    message: `Servidor WebSocket (clientes web) escutando em ${HOST}:${WS_PORT}`,
+  });
 });

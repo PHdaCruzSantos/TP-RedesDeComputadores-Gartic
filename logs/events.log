@@ -1,0 +1,29 @@
+{"timestamp":"2025-08-26T20:25:48.408Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T20:25:48.416Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T20:25:48.416Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T20:26:30.885Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.155.60:57936","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:26:30.917Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"r8qstgvufpq","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:26:34.244Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:57946","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:26:34.283Z","eventType":"connection","message":"Jogador registrado: bibi","nickname":"bibi","playerId":"nqcrvp7t9v","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:26:37.458Z","eventType":"game_event","message":"Jogo iniciado com 2 jogadores. Meta de 30 pontos."}
+{"timestamp":"2025-08-26T20:26:42.466Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Violino","nickname":"Pedro"}
+{"timestamp":"2025-08-26T20:29:30.436Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T20:29:30.443Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T20:29:30.443Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T20:30:10.432Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.155.60:58794","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:30:10.475Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"5i51cvefccc","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:30:14.357Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:58810","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:30:14.400Z","eventType":"connection","message":"Jogador registrado: bibi","nickname":"bibi","playerId":"ey737bf67f4","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:30:21.277Z","eventType":"game_event","message":"Jogo iniciado com 2 jogadores. Meta de 30 pontos."}
+{"timestamp":"2025-08-26T20:30:26.284Z","eventType":"game_event","message":"Nova rodada! Desenhista: bibi, Palavra: Prédio","nickname":"bibi"}
+{"timestamp":"2025-08-26T20:32:50.725Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T20:32:50.732Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T20:32:50.732Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T20:33:13.350Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:49940","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:33:13.392Z","eventType":"connection","message":"Jogador registrado: bibi","nickname":"bibi","playerId":"ifpaifiv8sd","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:33:14.763Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.155.60:49946","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:33:14.802Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"unw2vfj2w8j","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:33:16.726Z","eventType":"game_event","message":"Jogo iniciado com 2 jogadores. Meta de 30 pontos."}
+{"timestamp":"2025-08-26T20:33:21.728Z","eventType":"game_event","message":"Nova rodada! Desenhista: bibi, Palavra: Cachorro","nickname":"bibi"}
+{"timestamp":"2025-08-26T20:33:54.724Z","eventType":"game_event","message":"Pedro acertou a palavra: Cachorro","nickname":"Pedro","playerId":"unw2vfj2w8j"}
+{"timestamp":"2025-08-26T20:33:59.730Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Guarda-chuva","nickname":"Pedro"}

@@ -137,6 +137,14 @@ function resetGameView(reason: string) {
   }
 }
 
+function appendChatMessage(message: { from: string, text: string, type: "guess" | "system" | "correct"}) {
+    const msgElement = document.createElement("p");
+    msgElement.classList.add(message.type); // Adiciona classe para estilização
+    msgElement.innerHTML = `<strong>${message.from}:</strong> ${message.text}`;
+    chatMessages.appendChild(msgElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+}
+
 // --- Funções de Desenho ---
 
 function startDrawing(e: MouseEvent) {
@@ -301,12 +309,8 @@ playAgainBtn.addEventListener("click", () => {
   ws.send(JSON.stringify({ action: "request_restart" }));
 });
 
-function appendChatMessage(message: { from: string, text: string, type: "guess" | "system" | "correct"}) {
-    const msgElement = document.createElement("p");
-    msgElement.classList.add(message.type); // Adiciona classe para estilização
-    msgElement.innerHTML = `<strong>${message.from}:</strong> ${message.text}`;
-    chatMessages.appendChild(msgElement);
-    chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
-}
-
 // Adiciona os listeners para o desenho
+canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseout", stopDrawing);

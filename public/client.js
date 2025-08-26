@@ -111,6 +111,13 @@ function resetGameView(reason) {
             alert("Jogo terminado: ".concat(reason));
     }
 }
+function appendChatMessage(message) {
+    var msgElement = document.createElement("p");
+    msgElement.classList.add(message.type); // Adiciona classe para estilização
+    msgElement.innerHTML = "<strong>".concat(message.from, ":</strong> ").concat(message.text);
+    chatMessages.appendChild(msgElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+}
 // --- Funções de Desenho ---
 function startDrawing(e) {
     var _a;
@@ -247,11 +254,8 @@ playAgainBtn.addEventListener("click", function () {
     gameOverContainer.classList.add("hidden");
     ws.send(JSON.stringify({ action: "request_restart" }));
 });
-function appendChatMessage(message) {
-    var msgElement = document.createElement("p");
-    msgElement.classList.add(message.type); // Adiciona classe para estilização
-    msgElement.innerHTML = "<strong>".concat(message.from, ":</strong> ").concat(message.text);
-    chatMessages.appendChild(msgElement);
-    chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
-}
 // Adiciona os listeners para o desenho
+canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseout", stopDrawing);

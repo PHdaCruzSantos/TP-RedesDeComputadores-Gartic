@@ -354,3 +354,87 @@
 [2025-08-26T19:23:23.125Z] Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080
 [2025-08-26T19:23:45.095Z] Nova conexão WebSocket de 200.239.155.60
 [2025-08-26T19:23:45.127Z] Jogador registrado: Pedro (ID: ngt9sen14p)
+[2025-08-26T19:56:52.473Z] 100 palavras carregadas do arquivo words.json.
+[2025-08-26T19:56:52.482Z] Servidor TCP escutando em 0.0.0.0:2002
+[2025-08-26T19:56:52.482Z] Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080
+[2025-08-26T19:57:09.570Z] Nova conexão WebSocket de 200.239.155.60
+[2025-08-26T19:57:09.600Z] Jogador registrado: Pedro (ID: pn463yg2m59)
+[2025-08-26T19:57:12.879Z] Nova conexão WebSocket de 200.239.152.9
+[2025-08-26T19:57:12.913Z] Jogador registrado: bianca (ID: x6dqn46s1e8)
+[2025-08-26T19:57:15.507Z] Jogo iniciado com 2 jogadores. Meta de 30 pontos.
+[2025-08-26T19:57:20.515Z] Nova rodada! Desenhista: bianca, Palavra: Panqueca
+[2025-08-26T20:01:26.367Z] 100 palavras carregadas do arquivo words.json.
+[2025-08-26T20:01:26.374Z] Servidor TCP escutando em 0.0.0.0:2002
+[2025-08-26T20:01:26.374Z] Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080
+[2025-08-26T20:01:35.586Z] Nova conexão WebSocket de 200.239.155.60:36660
+[2025-08-26T20:01:35.616Z] Jogador registrado: Pedro (ID: 8m7w0gol0si)
+[2025-08-26T20:01:55.049Z] Nova conexão WebSocket de 200.239.152.9:55482
+[2025-08-26T20:01:55.088Z] Jogador registrado: marlon (ID: q8z2q7bgg6e)
+[2025-08-26T20:02:00.246Z] Nova conexão WebSocket de 200.239.152.9:41912
+[2025-08-26T20:02:00.279Z] Jogador registrado: bianca (ID: 2znv36niis2)
+[2025-08-26T20:02:03.485Z] Jogo iniciado com 3 jogadores. Meta de 45 pontos.
+[2025-08-26T20:02:08.490Z] Nova rodada! Desenhista: bianca, Palavra: Chuva
+[2025-08-26T20:02:53.296Z] 100 palavras carregadas do arquivo words.json.
+[2025-08-26T20:02:53.305Z] Servidor TCP escutando em 0.0.0.0:2002
+[2025-08-26T20:02:53.305Z] Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080
+[2025-08-26T20:03:04.538Z] Nova conexão WebSocket de 200.239.155.60:59432
+[2025-08-26T20:03:04.576Z] Jogador registrado: Pedro (ID: woz357dknpi)
+[2025-08-26T20:03:14.268Z] Nova conexão WebSocket de 200.239.152.9:50088
+[2025-08-26T20:03:14.303Z] Jogador registrado: bianca (ID: h1fjvtfppug)
+[2025-08-26T20:03:15.256Z] Jogo iniciado com 2 jogadores. Meta de 30 pontos.
+[2025-08-26T20:03:20.263Z] Nova rodada! Desenhista: Pedro, Palavra: Lago
+[2025-08-26T20:03:22.946Z] Nova conexão WebSocket de 200.239.152.9:35232
+[2025-08-26T20:03:23.042Z] Nova conexão WebSocket de 200.239.152.9:35236
+[2025-08-26T20:03:23.078Z] Jogador registrado: marlon (ID: l1rxrjbmp6)
+[2025-08-26T20:07:04.695Z] 100 palavras carregadas do arquivo words.json.
+[2025-08-26T20:07:04.705Z] Servidor TCP escutando em 0.0.0.0:2002
+[2025-08-26T20:07:04.705Z] Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080
+[2025-08-26T20:08:41.327Z] Nova conexão WebSocket de 200.239.155.60
+[2025-08-26T20:08:41.383Z] Jogador registrado: Pedro (ID: b9w3yy7pru7)
+[2025-08-26T20:08:50.900Z] Nova conexão WebSocket de 200.239.152.9
+[2025-08-26T20:08:50.937Z] Jogador registrado: bibi (ID: bwr8ofzqj8v)
+[2025-08-26T20:09:02.863Z] Jogo iniciado com 2 jogadores. Meta de 30 pontos.
+[2025-08-26T20:09:07.869Z] Nova rodada! Desenhista: Pedro, Palavra: Hospital
+[2025-08-26T20:09:15.516Z] Conexão WebSocket fechada de 200.239.155.60
+[2025-08-26T20:09:15.516Z] Jogador desconectado: Pedro
+[2025-08-26T20:09:15.516Z] Jogo parado: Jogadores insuficientes para continuar.
+[2025-08-26T20:11:34.438Z] 100 palavras carregadas do arquivo words.json.
+[2025-08-26T20:11:34.444Z] Servidor TCP escutando em 0.0.0.0:2002
+[2025-08-26T20:11:34.444Z] Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080
+[2025-08-26T20:11:53.571Z] Nova conexão WebSocket de 200.239.155.60
+[2025-08-26T20:11:53.637Z] Jogador registrado: Pedro (ID: vwtxdwpyt5p)
+[2025-08-26T20:12:05.955Z] Nova conexão WebSocket de 200.239.155.60
+[2025-08-26T20:12:05.994Z] Jogador registrado: Lucas (ID: ncafmiz8gy)
+[2025-08-26T20:12:07.259Z] Jogo iniciado com 2 jogadores. Meta de 30 pontos.
+[2025-08-26T20:12:12.265Z] Nova rodada! Desenhista: Lucas, Palavra: Alienígena
+[2025-08-26T20:12:22.405Z] Conexão WebSocket fechada de 200.239.155.60
+[2025-08-26T20:12:22.406Z] Jogador desconectado: Lucas
+[2025-08-26T20:12:22.406Z] Jogo parado: Jogadores insuficientes para continuar.
+[2025-08-26T20:14:41.500Z] 100 palavras carregadas do arquivo words.json.
+[2025-08-26T20:14:41.507Z] Servidor TCP escutando em 0.0.0.0:2002
+[2025-08-26T20:14:41.508Z] Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080
+[2025-08-26T20:14:52.611Z] Nova conexão WebSocket de 200.239.155.60
+[2025-08-26T20:14:52.644Z] Jogador registrado: Pedro (ID: zozu8n5qai)
+[2025-08-26T20:15:06.245Z] Nova conexão WebSocket de 200.239.155.60
+[2025-08-26T20:15:06.279Z] Jogador registrado: Lucas (ID: n4kfyo4xaz)
+[2025-08-26T20:15:07.416Z] Jogo iniciado com 2 jogadores. Meta de 30 pontos.
+[2025-08-26T20:15:12.419Z] Nova rodada! Desenhista: Pedro, Palavra: Lápis
+[2025-08-26T20:18:56.607Z] 100 palavras carregadas do arquivo words.json.
+[2025-08-26T20:18:56.615Z] Servidor TCP escutando em 0.0.0.0:2002
+[2025-08-26T20:18:56.615Z] Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080
+[2025-08-26T20:19:26.148Z] Nova conexão WebSocket de 200.239.155.60
+[2025-08-26T20:19:26.190Z] Jogador registrado: Pedro (ID: 3sqw5ljy0z2)
+[2025-08-26T20:19:36.678Z] Nova conexão WebSocket de 200.239.155.60
+[2025-08-26T20:19:36.710Z] Jogador registrado: Lucas (ID: oua0dn5qag)
+[2025-08-26T20:19:38.531Z] Jogo iniciado com 2 jogadores. Meta de 30 pontos.
+[2025-08-26T20:19:43.538Z] Nova rodada! Desenhista: Pedro, Palavra: Gato
+[2025-08-26T20:20:13.067Z] Conexão WebSocket fechada de 200.239.155.60
+[2025-08-26T20:20:13.067Z] Jogador desconectado: Lucas
+[2025-08-26T20:20:13.068Z] Jogo parado: Jogadores insuficientes para continuar.
+[2025-08-26T20:20:22.379Z] Nova conexão WebSocket de 200.239.155.60
+[2025-08-26T20:20:22.422Z] Jogador registrado: f (ID: w9npnylzgtl)
+[2025-08-26T20:20:25.977Z] Jogo iniciado com 2 jogadores. Meta de 30 pontos.
+[2025-08-26T20:20:30.982Z] Nova rodada! Desenhista: f, Palavra: Telescópio
+[2025-08-26T20:20:49.305Z] Conexão WebSocket fechada de 200.239.155.60
+[2025-08-26T20:20:49.305Z] Jogador desconectado: f
+[2025-08-26T20:20:49.305Z] Jogo parado: Jogadores insuficientes para continuar.
