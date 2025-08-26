@@ -62,6 +62,7 @@ interface Player {
   id: string;
   connection: ClientConnection;
   score: number;
+  wins: number;
 }
 
 type GameState = "LOBBY" | "IN_GAME" | "ROUND_OVER";
@@ -70,21 +71,35 @@ type GameState = "LOBBY" | "IN_GAME" | "ROUND_OVER";
 
 const players: Player[] = [];
 const wsIpMap = new Map<WebSocket, string>(); // Map to store WebSocket IPs
-const TCP_PORT = 2004; // ALterar para 2002 -> data de nascimento das crianças do grupo XDXD
+const TCP_PORT = 2002; // ALterar para 2002 -> data de nascimento das crianças do grupo XDXD
 const WS_PORT = 8080;
 const HOST = "0.0.0.0"; // Escuta em todas as interfaces de rede disponíveis
 const ROUND_DURATION = 60000; // 60 segundos
 
-const wordList = [
-  "Casa",
-  "Carro",
-  "Banana",
-  "Computador",
-  "Sol",
-  "Livro",
-  "Elefante",
-  "Girafa",
-];
+// Carrega a lista de palavras de um arquivo JSON
+let wordList: string[] = [];
+try {
+  const wordsFilePath = path.join(__dirname, "words.json");
+  const wordsFileContent = fs.readFileSync(wordsFilePath, "utf-8");
+  wordList = JSON.parse(wordsFileContent);
+  logConnection(
+    `${wordList.length} palavras carregadas do arquivo words.json.`
+  );
+} catch (error) {
+  console.error("Erro ao carregar a lista de palavras:", error);
+  // Fallback para uma lista padrão caso o arquivo falhe
+  wordList = [
+    "Casa",
+    "Carro",
+    "Banana",
+    "Computador",
+    "Sol",
+    "Livro",
+    "Elefante",
+    "Girafa",
+  ];
+  logConnection(`Usando lista de palavras padrão devido a um erro.`);
+}
 
 let game: {
   state: GameState;
@@ -127,11 +142,17 @@ function broadcastPlayerList() {
   const playerList = players.map((p) => ({
     nickname: p.nickname,
     score: p.score,
+    wins: p.wins,
   }));
   broadcast({ action: "update_players", players: playerList });
 }
 
 // --- Lógica do Jogo ---
+
+// Fila de jogadores para determinar a ordem de desenho
+let playerQueue: Player[] = [];
+let drawerIndex = -1; // Índice do desenhista atual na fila
+let maxScore = 0; // Pontuação para vencer a partida
 
 function clearRoundTimer() {
   if (game.roundTimerId) {
@@ -140,9 +161,86 @@ function clearRoundTimer() {
   }
 }
 
-function startNextRound() {
-  clearRoundTimer();
-  broadcast({ action: "game_stop", reason: "" }); // Reseta a UI do cliente
+function endGame(winners: Player[]) {
+    clearRoundTimer();
+
+    // Cria um ranking final ordenado por pontuação
+    const finalRanking = [...players]
+        .sort((a, b) => b.score - a.score)
+        .map(p => ({ nickname: p.nickname, score: p.score }));
+
+    let title = "";
+    let logMessage = "";
+
+    if (winners.length === 1) {
+        title = `Fim de Jogo! O campeão é ${winners[0].nickname}!`;
+        logMessage = `Jogo finalizado. Vencedor: ${winners[0].nickname}`;
+    } else {
+        const winnerNames = winners.map(w => w.nickname).join(', ');
+        title = `Fim de Jogo! Houve um empate entre ${winnerNames}!`;
+        logMessage = `Jogo finalizado. Empate entre: ${winnerNames}`;
+    }
+
+    // Incrementa o contador de vitórias para os vencedores
+    winners.forEach(winner => {
+        const playerInGame = players.find(p => p.id === winner.id);
+        if (playerInGame) {
+            playerInGame.wins += 1;
+        }
+    });
+
+    broadcast({ 
+        action: "game_over", 
+        title: title,
+        ranking: finalRanking
+    });
+
+    // Envia o resultado também como uma mensagem no chat
+    broadcast({ 
+        action: "chat_message", 
+        from: "Servidor", 
+        text: logMessage, 
+        type: "system"
+    });
+
+    logConnection(logMessage);
+
+    // Reseta o estado para o lobby, mantendo os jogadores e suas pontuações finais visíveis
+    game.state = "LOBBY";
+    game.currentDrawer = null;
+    game.currentWord = "";
+    playerQueue = [];
+    drawerIndex = -1;
+    maxScore = 0;
+}
+
+function checkForWinner(): boolean {
+    if (players.length === 0 || maxScore === 0) return false;
+
+    const highestScore = Math.max(...players.map(p => p.score));
+
+    if (highestScore >= maxScore) {
+        const winners = players.filter(p => p.score === highestScore);
+        if (winners.length > 0) {
+            endGame(winners);
+            return true; // O jogo terminou
+        }
+    }
+    return false; // O jogo continua
+}
+
+function startNewRound() {
+    clearRoundTimer();
+
+    // Verifica se há um vencedor antes de iniciar uma nova rodada
+    if (checkForWinner()) return;
+
+    if (playerQueue.length < 2) {
+        stopGame("Jogadores insuficientes para continuar.");
+        return;
+    }
+
+  broadcast({ action: "game_stop", reason: "" }); // Reseta a UI do cliente para a próxima rodada
 
   broadcast({
     action: "chat_message",
@@ -151,13 +249,53 @@ function startNextRound() {
     type: "system",
   });
 
+  // Inicia a próxima rodada após um intervalo
   setTimeout(() => {
-    if (players.length >= 2) {
-      startGame();
-    } else {
+    if (playerQueue.length < 2) {
       stopGame("Jogadores insuficientes para continuar.");
+      return;
     }
-  }, 5000); // Espera 5 segundos para a próxima rodada
+
+    // Avança para o próximo desenhista na fila
+    drawerIndex = (drawerIndex + 1) % playerQueue.length;
+    game.currentDrawer = playerQueue[drawerIndex];
+
+    const wordIndex = Math.floor(Math.random() * wordList.length);
+    game.currentWord = wordList[wordIndex];
+    game.state = "IN_GAME";
+
+    logConnection(
+      `Nova rodada! Desenhista: ${game.currentDrawer.nickname}, Palavra: ${game.currentWord}`
+    );
+
+    // Informa ao desenhista qual é a sua palavra
+    sendMessage(game.currentDrawer.connection, {
+      action: "your_turn",
+      word: game.currentWord,
+    });
+
+    // Informa a todos os outros sobre o início da rodada
+    broadcast({
+      action: "game_start",
+      drawer: game.currentDrawer.nickname,
+      word_length: game.currentWord.length,
+      round_duration: ROUND_DURATION / 1000,
+      maxScore: maxScore,
+    });
+
+    // Inicia o timer da rodada no servidor
+    game.roundTimerId = setTimeout(() => {
+      if (game.state === "IN_GAME") {
+        broadcast({
+          action: "chat_message",
+          from: "Servidor",
+          text: `O tempo acabou! A palavra era: ${game.currentWord}`,
+          type: "system",
+        });
+        startNewRound(); // Passa para a próxima rodada
+      }
+    }, ROUND_DURATION);
+  }, 5000);
 }
 
 function startGame() {
@@ -169,41 +307,31 @@ function startGame() {
     return;
   }
 
-  clearRoundTimer(); // Garante que não haja timers antigos
-  game.state = "IN_GAME";
-  const drawerIndex = Math.floor(Math.random() * players.length);
-  game.currentDrawer = players[drawerIndex];
-  const wordIndex = Math.floor(Math.random() * wordList.length);
-  game.currentWord = wordList[wordIndex];
+  players.forEach((p) => (p.score = 0));
+
+  //pontuação máxima (ex: 15 pontos por jogador na partida)
+  maxScore = players.length * 15;
+
+  // 3. Cria e embaralha a fila de desenho
+  playerQueue = [...players];
+  for (let i = playerQueue.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [playerQueue[i], playerQueue[j]] = [playerQueue[j], playerQueue[i]];
+  }
+  drawerIndex = -1; // Começa em -1 para que o primeiro jogador seja o índice 0
 
   logConnection(
-    `Nova rodada! Desenhista: ${game.currentDrawer.nickname}, Palavra: ${game.currentWord}`
+    `Jogo iniciado com ${players.length} jogadores. Meta de ${maxScore} pontos.`
   );
-
-  sendMessage(game.currentDrawer.connection, {
-    action: "your_turn",
-    word: game.currentWord,
-  });
-
   broadcast({
-    action: "game_start",
-    drawer: game.currentDrawer.nickname,
-    word_length: game.currentWord.length,
-    round_duration: ROUND_DURATION / 1000, // Envia em segundos
+    action: "chat_message",
+    from: "Servidor",
+    text: `O jogo começou! O primeiro a fazer ${maxScore} pontos vence!`,
+    type: "system",
   });
 
-  // Inicia o timer da rodada
-  game.roundTimerId = setTimeout(() => {
-    if (game.state === "IN_GAME") {
-      broadcast({
-        action: "chat_message",
-        from: "Servidor",
-        text: `O tempo acabou! A palavra era: ${game.currentWord}`,
-        type: "system",
-      });
-      startNextRound();
-    }
-  }, ROUND_DURATION);
+  broadcastPlayerList(); // Envia a lista com as pontuações zeradas
+  startNewRound(); // Inicia a primeira rodada
 }
 
 function stopGame(reason: string) {
@@ -211,6 +339,9 @@ function stopGame(reason: string) {
   game.state = "LOBBY";
   game.currentDrawer = null;
   game.currentWord = "";
+  playerQueue = [];
+  drawerIndex = -1;
+  maxScore = 0;
   broadcast({ action: "game_stop", reason });
   logConnection(`Jogo parado: ${reason}`);
 }
@@ -221,7 +352,7 @@ function handleGuess(player: Player, word: string) {
   }
 
   if (word.trim().toLowerCase() === game.currentWord.toLowerCase()) {
-    clearRoundTimer(); // Acertou, então para o timer
+    clearRoundTimer(); // Para o timer da rodada
     player.score += 10;
     if (game.currentDrawer) {
       game.currentDrawer.score += 5;
@@ -235,9 +366,13 @@ function handleGuess(player: Player, word: string) {
       type: "correct",
       word: game.currentWord,
     });
-    broadcastPlayerList();
+    broadcastPlayerList(); // Atualiza as pontuações para todos
     logConnection(`${player.nickname} acertou a palavra: ${game.currentWord}`);
-    startNextRound();
+
+    // Verifica se o jogo acabou, senão, inicia a próxima rodada
+    if (!checkForWinner()) {
+      startNewRound();
+    }
   } else {
     broadcast({
       action: "chat_message",
@@ -266,9 +401,20 @@ function handleRegister(connection: ClientConnection, nickname: string) {
     id,
     connection,
     score: 0,
+    wins: 0,
   };
 
   players.push(newPlayer);
+  // Adiciona o novo jogador à fila de espera se o jogo já começou
+  if (game.state !== "LOBBY") {
+    playerQueue.push(newPlayer);
+    sendMessage(connection, {
+      action: "chat_message",
+      from: "Servidor",
+      text: "O jogo já começou. Você foi adicionado à fila e desenhará em breve.",
+      type: "system",
+    });
+  }
 
   logConnection(`Jogador registrado: ${nickname} (ID: ${id})`);
   logUserToCsv(newPlayer); // Add user to CSV registry
@@ -286,13 +432,29 @@ function handleDisconnect(connection: ClientConnection) {
 
   if (playerIndex !== -1) {
     const disconnectedPlayer = players.splice(playerIndex, 1)[0];
+    // Remove também da fila de desenho
+    const queueIndex = playerQueue.findIndex(
+      (p) => p.id === disconnectedPlayer.id
+    );
+    if (queueIndex !== -1) {
+      playerQueue.splice(queueIndex, 1);
+    }
+
     logConnection(`Jogador desconectado: ${disconnectedPlayer.nickname}`);
 
     if (
       game.state === "IN_GAME" &&
       game.currentDrawer?.id === disconnectedPlayer.id
     ) {
-      stopGame("O desenhista saiu da partida.");
+      broadcast({
+        action: "chat_message",
+        from: "Servidor",
+        text: "O desenhista saiu. A rodada foi interrompida.",
+        type: "system",
+      });
+      startNewRound(); // Pula para a próxima rodada
+    } else if (players.length < 2 && game.state === "IN_GAME") {
+      stopGame("Jogadores insuficientes para continuar.");
     }
 
     broadcastPlayerList();
@@ -318,6 +480,12 @@ function handleMessage(connection: ClientConnection, data: Buffer | string) {
       case "start_game":
         if (game.state === "LOBBY") {
           startGame();
+        }
+        break;
+      case "request_restart":
+        if (game.state === "LOBBY") {
+            logConnection(`Jogador ${player.nickname} requisitou um novo jogo.`);
+            startGame();
         }
         break;
       case "draw":
@@ -365,7 +533,15 @@ tcpServer.listen(TCP_PORT, HOST, () => {
 const wsServer = new WebSocketServer({ port: WS_PORT, host: HOST });
 
 wsServer.on("connection", (ws: WebSocket, req: IncomingMessage) => {
-  const clientIp = req.socket.remoteAddress || "N/A";
+  // Tenta obter o IP real do cabeçalho X-Forwarded-For (usado por proxies como o Ngrok)
+  // O cabeçalho pode conter uma lista de IPs, o primeiro é o do cliente original.
+  const forwardedFor = req.headers["x-forwarded-for"];
+  const clientIp =
+    (typeof forwardedFor === "string"
+      ? forwardedFor.split(",")[0].trim()
+      : undefined) ||
+    req.socket.remoteAddress ||
+    "N/A";
   wsIpMap.set(ws, clientIp); // Store IP for later retrieval
   logConnection(`Nova conexão WebSocket de ${clientIp}`);
 

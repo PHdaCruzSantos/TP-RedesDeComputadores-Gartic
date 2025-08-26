@@ -15,6 +15,12 @@ var chatMessages = document.getElementById("chat-messages");
 var guessInput = document.getElementById("guess-input");
 var guessBtn = document.getElementById("guess-btn");
 var timerSpan = document.getElementById("timer");
+var goalScoreSpan = document.getElementById("goal-score");
+// Elementos do Modal de Fim de Jogo
+var gameOverContainer = document.getElementById("game-over-container");
+var winnerAnnouncement = document.getElementById("winner-announcement");
+var finalRankingList = document.getElementById("final-ranking-list");
+var playAgainBtn = document.getElementById("play-again-btn");
 // --- Conexão WebSocket e Estado do Cliente---
 var ws;
 var myNickname = "";
@@ -26,9 +32,11 @@ var clientTimerId = null;
 // --- Funções de UI ---
 function updatePlayerList(players) {
     playerList.innerHTML = ""; // Limpa a lista atual
+    players.sort(function (a, b) { return b.score - a.score; }); // Ordena por pontuação
     players.forEach(function (player) {
         var li = document.createElement("li");
-        li.textContent = "".concat(player.nickname, " - ").concat(player.score, " pontos");
+        var trophy = player.wins > 0 ? "\uD83C\uDFC6(".concat(player.wins, ")") : ""; // Adiciona troféu e contagem de vitórias
+        li.textContent = "".concat(trophy, " ").concat(player.nickname, " - ").concat(player.score, " pontos");
         playerList.appendChild(li);
     });
 }
@@ -53,6 +61,12 @@ function handleGameStart(message) {
     startGameBtn.classList.add("hidden");
     isMyTurn = message.drawer === myNickname;
     guessInput.disabled = isMyTurn;
+    goalScoreSpan.textContent = message.maxScore.toString();
+    // Remove o texto antigo se existir
+    var oldInfoText = document.getElementById("info-text");
+    if (oldInfoText) {
+        oldInfoText.remove();
+    }
     var infoText = document.createElement("p");
     infoText.id = "info-text";
     infoText.textContent = "".concat(message.drawer, " est\u00E1 desenhando...");
@@ -90,16 +104,12 @@ function resetGameView(reason) {
     }
     secretWordSpan.textContent = "";
     timerSpan.textContent = "-";
+    goalScoreSpan.textContent = "-";
     if (reason) {
-        alert("Jogo terminado: ".concat(reason));
+        // Não mostra alerta para reset de rodada normal
+        if (reason !== "")
+            alert("Jogo terminado: ".concat(reason));
     }
-}
-function appendChatMessage(message) {
-    var msgElement = document.createElement("p");
-    msgElement.classList.add(message.type); // Adiciona classe para estilização
-    msgElement.innerHTML = "<strong>".concat(message.from, ":</strong> ").concat(message.text);
-    chatMessages.appendChild(msgElement);
-    chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
 }
 // --- Funções de Desenho ---
 function startDrawing(e) {
@@ -120,7 +130,7 @@ function draw(e) {
     var newY = e.offsetY;
     var drawData = {
         from: { x: lastX, y: lastY },
-        to: { x: newX, y: newY }
+        to: { x: newX, y: newY },
     };
     // Desenha localmente e envia para o servidor
     drawRemotely(drawData);
@@ -163,7 +173,7 @@ connectBtn.addEventListener("click", function () {
     };
     ws.onmessage = function (event) {
         var message = JSON.parse(event.data);
-        if (message.action !== 'drawing_update') {
+        if (message.action !== "drawing_update") {
             console.log("Mensagem recebida:", message);
         }
         switch (message.action) {
@@ -191,6 +201,18 @@ connectBtn.addEventListener("click", function () {
                 break;
             case "game_stop":
                 resetGameView(message.reason);
+                break;
+            case "game_over":
+                resetGameView(""); // Reseta a UI do jogo em segundo plano
+                winnerAnnouncement.textContent = message.title;
+                finalRankingList.innerHTML = ""; // Limpa o ranking anterior
+                message.ranking.forEach(function (player) {
+                    var li = document.createElement("li");
+                    li.textContent = "".concat(player.nickname, " - ").concat(player.score, " pontos");
+                    finalRankingList.appendChild(li);
+                });
+                gameOverContainer.classList.remove("hidden");
+                alert(message.title); // Adiciona o alert com o resultado
                 break;
             case "game_error":
                 alert("Erro no jogo: ".concat(message.message));
@@ -221,8 +243,15 @@ guessInput.addEventListener("keydown", function (e) {
         handleGuessSubmit();
     }
 });
+playAgainBtn.addEventListener("click", function () {
+    gameOverContainer.classList.add("hidden");
+    ws.send(JSON.stringify({ action: "request_restart" }));
+});
+function appendChatMessage(message) {
+    var msgElement = document.createElement("p");
+    msgElement.classList.add(message.type); // Adiciona classe para estilização
+    msgElement.innerHTML = "<strong>".concat(message.from, ":</strong> ").concat(message.text);
+    chatMessages.appendChild(msgElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+}
 // Adiciona os listeners para o desenho
-canvas.addEventListener("mousedown", startDrawing);
-canvas.addEventListener("mousemove", draw);
-canvas.addEventListener("mouseup", stopDrawing);
-canvas.addEventListener("mouseout", stopDrawing);
