@@ -1,0 +1,177 @@
+{"timestamp":"2025-08-26T20:25:48.408Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T20:25:48.416Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T20:25:48.416Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T20:26:30.885Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.155.60:57936","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:26:30.917Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"r8qstgvufpq","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:26:34.244Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:57946","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:26:34.283Z","eventType":"connection","message":"Jogador registrado: bibi","nickname":"bibi","playerId":"nqcrvp7t9v","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:26:37.458Z","eventType":"game_event","message":"Jogo iniciado com 2 jogadores. Meta de 30 pontos."}
+{"timestamp":"2025-08-26T20:26:42.466Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Violino","nickname":"Pedro"}
+{"timestamp":"2025-08-26T20:29:30.436Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T20:29:30.443Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T20:29:30.443Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T20:30:10.432Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.155.60:58794","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:30:10.475Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"5i51cvefccc","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:30:14.357Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:58810","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:30:14.400Z","eventType":"connection","message":"Jogador registrado: bibi","nickname":"bibi","playerId":"ey737bf67f4","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:30:21.277Z","eventType":"game_event","message":"Jogo iniciado com 2 jogadores. Meta de 30 pontos."}
+{"timestamp":"2025-08-26T20:30:26.284Z","eventType":"game_event","message":"Nova rodada! Desenhista: bibi, Palavra: Prédio","nickname":"bibi"}
+{"timestamp":"2025-08-26T20:32:50.725Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T20:32:50.732Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T20:32:50.732Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T20:33:13.350Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:49940","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:33:13.392Z","eventType":"connection","message":"Jogador registrado: bibi","nickname":"bibi","playerId":"ifpaifiv8sd","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:33:14.763Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.155.60:49946","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:33:14.802Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"unw2vfj2w8j","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T20:33:16.726Z","eventType":"game_event","message":"Jogo iniciado com 2 jogadores. Meta de 30 pontos."}
+{"timestamp":"2025-08-26T20:33:21.728Z","eventType":"game_event","message":"Nova rodada! Desenhista: bibi, Palavra: Cachorro","nickname":"bibi"}
+{"timestamp":"2025-08-26T20:33:54.724Z","eventType":"game_event","message":"Pedro acertou a palavra: Cachorro","nickname":"Pedro","playerId":"unw2vfj2w8j"}
+{"timestamp":"2025-08-26T20:33:59.730Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Guarda-chuva","nickname":"Pedro"}
+{"timestamp":"2025-08-26T21:35:48.711Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T21:35:48.718Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T21:35:48.718Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T21:35:56.667Z","eventType":"connection","message":"Nova conexão TCP: TCP client from 127.0.0.1:40202","ipAddress":"127.0.0.1","connectionType":"TCP"}
+{"timestamp":"2025-08-26T22:00:25.526Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T22:00:25.533Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T22:00:25.533Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T22:01:44.898Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:44116","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:01:44.959Z","eventType":"connection","message":"Jogador registrado: xXxgusta1000grauxXx","nickname":"xXxgusta1000grauxXx","playerId":"87v1h3ieefs","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:02:16.862Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.155.60:57560","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:02:16.894Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"nh97h5dyey","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:03:24.668Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:37388","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:03:24.954Z","eventType":"connection","message":"Jogador registrado: bianca","nickname":"bianca","playerId":"rmxgzhnuo5f","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:03:34.432Z","eventType":"game_event","message":"Jogo iniciado com 3 jogadores. Meta de 45 pontos."}
+{"timestamp":"2025-08-26T22:03:39.439Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Dinossauro","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:04:13.256Z","eventType":"game_event","message":"xXxgusta1000grauxXx acertou a palavra: Dinossauro","nickname":"xXxgusta1000grauxXx","playerId":"87v1h3ieefs"}
+{"timestamp":"2025-08-26T22:04:18.260Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Cobra","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:04:37.796Z","eventType":"game_event","message":"xXxgusta1000grauxXx acertou a palavra: Cobra","nickname":"xXxgusta1000grauxXx","playerId":"87v1h3ieefs"}
+{"timestamp":"2025-08-26T22:04:42.802Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Foguete","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:04:52.277Z","eventType":"disconnection","message":"Jogador desconectado: xXxgusta1000grauxXx","nickname":"xXxgusta1000grauxXx","playerId":"87v1h3ieefs","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:04:57.279Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Supermercado","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:05:10.077Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:60378","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:05:10.154Z","eventType":"connection","message":"Jogador registrado: xXxgusta1000grauxXx","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:06:02.288Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Microfone","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:06:42.411Z","eventType":"game_event","message":"Pedro acertou a palavra: Microfone","nickname":"Pedro","playerId":"nh97h5dyey"}
+{"timestamp":"2025-08-26T22:06:47.416Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Escola","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:07:27.776Z","eventType":"game_event","message":"xXxgusta1000grauxXx acertou a palavra: Escola","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:07:32.780Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Lago","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:07:47.867Z","eventType":"game_event","message":"bianca acertou a palavra: Lago","nickname":"bianca","playerId":"rmxgzhnuo5f"}
+{"timestamp":"2025-08-26T22:07:52.872Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Flor","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:08:29.127Z","eventType":"game_event","message":"Pedro acertou a palavra: Flor","nickname":"Pedro","playerId":"nh97h5dyey"}
+{"timestamp":"2025-08-26T22:08:34.132Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Sol","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:08:46.468Z","eventType":"game_event","message":"xXxgusta1000grauxXx acertou a palavra: Sol","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:08:51.474Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Lápis","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:09:17.119Z","eventType":"game_event","message":"bianca acertou a palavra: Lápis","nickname":"bianca","playerId":"rmxgzhnuo5f"}
+{"timestamp":"2025-08-26T22:09:22.124Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Violino","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:09:33.468Z","eventType":"game_event","message":"Pedro acertou a palavra: Violino","nickname":"Pedro","playerId":"nh97h5dyey"}
+{"timestamp":"2025-08-26T22:09:33.469Z","eventType":"game_event","message":"Jogo finalizado. Vencedor: Pedro."}
+{"timestamp":"2025-08-26T22:09:59.774Z","eventType":"game_event","message":"Jogador xXxgusta1000grauxXx requisitou um novo jogo.","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:09:59.774Z","eventType":"game_event","message":"Jogo iniciado com 3 jogadores. Meta de 45 pontos."}
+{"timestamp":"2025-08-26T22:10:03.518Z","eventType":"game_event","message":"Jogador bianca requisitou um novo jogo.","nickname":"bianca","playerId":"rmxgzhnuo5f"}
+{"timestamp":"2025-08-26T22:10:03.518Z","eventType":"game_event","message":"Jogo iniciado com 3 jogadores. Meta de 45 pontos."}
+{"timestamp":"2025-08-26T22:10:04.776Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Igreja","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:10:08.522Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Deserto","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:10:37.315Z","eventType":"game_event","message":"bianca acertou a palavra: Deserto","nickname":"bianca","playerId":"rmxgzhnuo5f"}
+{"timestamp":"2025-08-26T22:10:42.320Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Prédio","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:10:55.693Z","eventType":"game_event","message":"xXxgusta1000grauxXx acertou a palavra: Prédio","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:11:00.699Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Deserto","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:11:09.785Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Girassol","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:11:28.733Z","eventType":"game_event","message":"bianca acertou a palavra: Girassol","nickname":"bianca","playerId":"rmxgzhnuo5f"}
+{"timestamp":"2025-08-26T22:11:33.734Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Livro","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:11:43.653Z","eventType":"game_event","message":"Pedro acertou a palavra: Livro","nickname":"Pedro","playerId":"nh97h5dyey"}
+{"timestamp":"2025-08-26T22:11:48.654Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Casa","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:11:56.468Z","eventType":"game_event","message":"Pedro acertou a palavra: Casa","nickname":"Pedro","playerId":"nh97h5dyey"}
+{"timestamp":"2025-08-26T22:12:01.473Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Sushi","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:12:42.508Z","eventType":"game_event","message":"xXxgusta1000grauxXx acertou a palavra: Sushi","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:12:47.513Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Sushi","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:13:52.526Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Caneta","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:14:09.231Z","eventType":"game_event","message":"Pedro acertou a palavra: Caneta","nickname":"Pedro","playerId":"nh97h5dyey"}
+{"timestamp":"2025-08-26T22:14:09.231Z","eventType":"game_event","message":"Jogo finalizado. Vencedor: Pedro."}
+{"timestamp":"2025-08-26T22:14:20.579Z","eventType":"game_event","message":"Jogador xXxgusta1000grauxXx requisitou um novo jogo.","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:14:20.580Z","eventType":"game_event","message":"Jogo iniciado com 3 jogadores. Meta de 45 pontos."}
+{"timestamp":"2025-08-26T22:14:23.382Z","eventType":"game_event","message":"Jogador bianca requisitou um novo jogo.","nickname":"bianca","playerId":"rmxgzhnuo5f"}
+{"timestamp":"2025-08-26T22:14:23.382Z","eventType":"game_event","message":"Jogo iniciado com 3 jogadores. Meta de 45 pontos."}
+{"timestamp":"2025-08-26T22:14:25.582Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Fantasma","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:14:28.385Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Alienígena","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:15:30.588Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Câmera","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:16:13.306Z","eventType":"disconnection","message":"Jogador desconectado: Pedro","nickname":"Pedro","playerId":"nh97h5dyey","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:16:18.311Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Livro","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:16:33.589Z","eventType":"game_event","message":"xXxgusta1000grauxXx acertou a palavra: Livro","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:16:38.596Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Cola","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:17:00.880Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.155.60:49044","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:17:00.913Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"7kmp54qkx8t","ipAddress":"200.239.155.60","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:17:43.607Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Abajur","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:18:05.281Z","eventType":"game_event","message":"xXxgusta1000grauxXx acertou a palavra: Abajur","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:18:10.286Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Girassol","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:18:22.538Z","eventType":"game_event","message":"bianca acertou a palavra: Girassol","nickname":"bianca","playerId":"rmxgzhnuo5f"}
+{"timestamp":"2025-08-26T22:18:27.539Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Dinossauro","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:18:39.934Z","eventType":"game_event","message":"bianca acertou a palavra: Dinossauro","nickname":"bianca","playerId":"rmxgzhnuo5f"}
+{"timestamp":"2025-08-26T22:18:44.939Z","eventType":"game_event","message":"Nova rodada! Desenhista: bianca, Palavra: Cachoeira","nickname":"bianca"}
+{"timestamp":"2025-08-26T22:19:04.032Z","eventType":"game_event","message":"xXxgusta1000grauxXx acertou a palavra: Cachoeira","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:19:09.038Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Cama","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:19:29.985Z","eventType":"connection","message":"Nova conexão TCP: TCP client from 127.0.0.1:43880","ipAddress":"127.0.0.1","connectionType":"TCP"}
+{"timestamp":"2025-08-26T22:20:14.041Z","eventType":"game_event","message":"Nova rodada! Desenhista: xXxgusta1000grauxXx, Palavra: Xadrez","nickname":"xXxgusta1000grauxXx"}
+{"timestamp":"2025-08-26T22:20:45.282Z","eventType":"game_event","message":"bianca acertou a palavra: Xadrez","nickname":"bianca","playerId":"rmxgzhnuo5f"}
+{"timestamp":"2025-08-26T22:20:45.283Z","eventType":"game_event","message":"Jogo finalizado. Vencedor: bianca."}
+{"timestamp":"2025-08-26T22:20:52.653Z","eventType":"game_event","message":"Jogo iniciado com 3 jogadores. Meta de 45 pontos."}
+{"timestamp":"2025-08-26T22:20:52.653Z","eventType":"game_event","message":"Jogador xXxgusta1000grauxXx requisitou um novo jogo.","nickname":"xXxgusta1000grauxXx","playerId":"60p9k4dceil"}
+{"timestamp":"2025-08-26T22:25:16.150Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T22:25:16.166Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T22:25:16.167Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T22:25:34.895Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:49716","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:25:34.977Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"esoq1o9mek","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:26:13.989Z","eventType":"disconnection","message":"Jogador desconectado: Pedro","nickname":"Pedro","playerId":"esoq1o9mek","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:36:12.981Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T22:36:12.990Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T22:36:12.991Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T22:37:22.466Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:56010","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:37:22.548Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"cx7j4j01co","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:38:33.585Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:49162","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:38:33.637Z","eventType":"connection","message":"Jogador registrado: bia","nickname":"bia","playerId":"8g5db3p8cx","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:39:58.361Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:57750","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:39:58.406Z","eventType":"connection","message":"Jogador registrado: Lucas","nickname":"Lucas","playerId":"4mkwjuek2em","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:40:01.298Z","eventType":"game_event","message":"Jogo iniciado com 3 jogadores. Meta de 45 pontos."}
+{"timestamp":"2025-08-26T22:40:06.306Z","eventType":"game_event","message":"Nova rodada! Desenhista: Lucas, Palavra: Peixe","nickname":"Lucas"}
+{"timestamp":"2025-08-26T22:40:20.750Z","eventType":"game_event","message":"Pedro acertou a palavra: Peixe","nickname":"Pedro","playerId":"cx7j4j01co"}
+{"timestamp":"2025-08-26T22:40:25.755Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Rádio","nickname":"Pedro"}
+{"timestamp":"2025-08-26T22:40:44.231Z","eventType":"game_event","message":"Lucas acertou a palavra: Rádio","nickname":"Lucas","playerId":"4mkwjuek2em"}
+{"timestamp":"2025-08-26T22:40:49.237Z","eventType":"game_event","message":"Nova rodada! Desenhista: bia, Palavra: Túnel","nickname":"bia"}
+{"timestamp":"2025-08-26T22:41:16.596Z","eventType":"disconnection","message":"Jogador desconectado: Lucas","nickname":"Lucas","playerId":"4mkwjuek2em","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T22:41:32.886Z","eventType":"game_event","message":"Pedro acertou a palavra: Túnel","nickname":"Pedro","playerId":"cx7j4j01co"}
+{"timestamp":"2025-08-26T22:41:37.891Z","eventType":"game_event","message":"Nova rodada! Desenhista: bia, Palavra: Guarda-chuva","nickname":"bia"}
+{"timestamp":"2025-08-26T23:00:25.926Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T23:00:25.934Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T23:00:25.934Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T23:00:32.801Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:59686","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:00:32.913Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"m4kinlhb9om","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:01:08.994Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:38576","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:01:09.085Z","eventType":"connection","message":"Jogador registrado: bia","nickname":"bia","playerId":"lg62m23ntc8","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:01:11.580Z","eventType":"game_event","message":"Jogo iniciado com 2 jogadores. Meta de 30 pontos."}
+{"timestamp":"2025-08-26T23:01:16.586Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Câmera","nickname":"Pedro"}
+{"timestamp":"2025-08-26T23:01:52.579Z","eventType":"game_event","message":"bia acertou a palavra: Câmera","nickname":"bia","playerId":"lg62m23ntc8"}
+{"timestamp":"2025-08-26T23:01:57.581Z","eventType":"game_event","message":"Nova rodada! Desenhista: bia, Palavra: Deserto","nickname":"bia"}
+{"timestamp":"2025-08-26T23:02:36.573Z","eventType":"game_event","message":"Pedro acertou a palavra: Deserto","nickname":"Pedro","playerId":"m4kinlhb9om"}
+{"timestamp":"2025-08-26T23:02:41.578Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Arco-íris","nickname":"Pedro"}
+{"timestamp":"2025-08-26T23:03:12.147Z","eventType":"game_event","message":"bia acertou a palavra: Arco-íris","nickname":"bia","playerId":"lg62m23ntc8"}
+{"timestamp":"2025-08-26T23:03:17.151Z","eventType":"game_event","message":"Nova rodada! Desenhista: bia, Palavra: Girassol","nickname":"bia"}
+{"timestamp":"2025-08-26T23:06:08.699Z","eventType":"info","message":"100 palavras carregadas do arquivo words.json."}
+{"timestamp":"2025-08-26T23:06:08.707Z","eventType":"info","message":"Servidor TCP escutando em 0.0.0.0:2002"}
+{"timestamp":"2025-08-26T23:06:08.707Z","eventType":"info","message":"Servidor WebSocket (clientes web) escutando em 0.0.0.0:8080"}
+{"timestamp":"2025-08-26T23:06:22.431Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:49814","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:06:22.558Z","eventType":"connection","message":"Jogador registrado: bia","nickname":"bia","playerId":"xbo4kotwtf","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:06:42.628Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:49388","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:06:42.980Z","eventType":"connection","message":"Jogador registrado: Pedro","nickname":"Pedro","playerId":"z0giitah0rl","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:06:52.656Z","eventType":"disconnection","message":"Jogador desconectado: bia","nickname":"bia","playerId":"xbo4kotwtf","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:07:15.288Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:42904","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:07:15.412Z","eventType":"connection","message":"Jogador registrado: bia","nickname":"bia","playerId":"jkyszsseevc","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:07:18.930Z","eventType":"game_event","message":"Jogo iniciado com 2 jogadores. Meta de 30 pontos."}
+{"timestamp":"2025-08-26T23:07:23.936Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Estrada","nickname":"Pedro"}
+{"timestamp":"2025-08-26T23:08:11.701Z","eventType":"game_event","message":"bia acertou a palavra: Estrada","nickname":"bia","playerId":"jkyszsseevc"}
+{"timestamp":"2025-08-26T23:08:16.706Z","eventType":"game_event","message":"Nova rodada! Desenhista: bia, Palavra: Apontador","nickname":"bia"}
+{"timestamp":"2025-08-26T23:08:31.776Z","eventType":"connection","message":"Nova conexão WebSocket de 200.239.152.9:42230","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:08:31.831Z","eventType":"connection","message":"Jogador registrado: joao","nickname":"joao","playerId":"o554fpvrdci","ipAddress":"200.239.152.9","connectionType":"WebSocket"}
+{"timestamp":"2025-08-26T23:09:21.720Z","eventType":"game_event","message":"Nova rodada! Desenhista: joao, Palavra: Trovão","nickname":"joao"}
+{"timestamp":"2025-08-26T23:10:27.237Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Carro","nickname":"Pedro"}
+{"timestamp":"2025-08-26T23:11:32.260Z","eventType":"game_event","message":"Nova rodada! Desenhista: bia, Palavra: Vulcão","nickname":"bia"}
+{"timestamp":"2025-08-26T23:12:37.283Z","eventType":"game_event","message":"Nova rodada! Desenhista: joao, Palavra: Deserto","nickname":"joao"}
+{"timestamp":"2025-08-26T23:13:42.315Z","eventType":"game_event","message":"Nova rodada! Desenhista: Pedro, Palavra: Telefone","nickname":"Pedro"}

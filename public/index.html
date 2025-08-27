@@ -18,9 +18,10 @@
             <h3>Jogadores</h3>
             <ul id="player-list"></ul>
             <button id="start-game-btn">Iniciar Jogo</button>
-            <div id="word-display">
+            <div id="word-display" class="hidden">
                 <p>A palavra é: <span id="secret-word"></span></p>
-                <p>Tempo: <span id="timer">60</span>s</p>
+                <p>Tempo: <span id="timer">-</span>s</p>
+                <p>Meta: <span id="goal-score">-</span> pontos</p>
             </div>
         </div>
         <div id="canvas-container">
@@ -34,6 +35,18 @@
         </div>
     </div>
 
+    </div>
+    </div>
+
+    <div id="game-over-container" class="hidden overlay">
+        <div class="modal">
+            <h2 id="game-over-title">Fim de Jogo!</h2>
+            <p id="winner-announcement"></p>
+            <h3>Ranking Final</h3>
+            <ul id="final-ranking-list"></ul>
+            <button id="play-again-btn">Jogar Novamente</button>
+        </div>
+    </div>
     <!-- O script será compilado a partir do client.ts -->
     <script src="client.js"></script>
 </body>

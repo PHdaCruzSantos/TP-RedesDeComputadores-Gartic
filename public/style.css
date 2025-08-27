@@ -66,6 +66,30 @@ body {
     height: 400px;
 }
 
+#chat-messages p {
+    margin: 0.3rem 0;
+    padding: 0.5rem;
+    border-radius: 8px;
+    word-wrap: break-word;
+}
+
+#chat-messages p.system {
+    color: #6c757d;
+    font-style: italic;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+#chat-messages p.correct {
+    color: #155724;
+    background-color: #d4edda;
+    font-weight: bold;
+}
+
+#chat-messages p.guess {
+    background-color: #f0f0f0;
+}
+
 #word-display{
     background-color: rgba(250, 249, 249, 0.767);
 }
@@ -90,4 +114,47 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal h2 {
+    margin-top: 0;
+}
+
+.modal #final-ranking-list {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+    max-width: 300px;
+    margin: 1rem auto;
+}
+
+.modal #final-ranking-list li {
+    padding: 0.25rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.modal #final-ranking-list li:first-child {
+    font-weight: bold;
+    color: #007bff;
 }
