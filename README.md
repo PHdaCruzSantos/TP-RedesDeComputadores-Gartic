@@ -61,6 +61,22 @@ Você precisará de **3 terminais** rodando ao mesmo tempo:
 
 ## 3. Arquitetura e Protocolos de Rede
 
+TCP não é utilizado
+O cliente web só conecta via WebSocket. A porta TCP fica "ociosa":
+
+```typescript
+// server.ts - TCP server existe mas ninguém conecta
+tcpServer.listen(TCP_PORT, HOST, () => {
+  logConnection(`Servidor TCP escutando em ${HOST}:${TCP_PORT}`);
+});
+```
+
+```bash
+# Teste manual via telnet (se perguntarem)
+telnet localhost 2002
+{"action":"register","nickname":"TesteTCP"}
+```
+
 ### 3.1. Atendendo aos Requisitos de Sockets TCP
 
 O trabalho prático exige o uso de "Sockets TCP" para a comunicação. O projeto atende a este requisito de duas maneiras fundamentais:

@@ -14,7 +14,7 @@ export interface EventLogData {
 }
 
 export function logEvent(data: EventLogData) {
-  console.log(`[LOG] ${data.eventType.toUpperCase()}: ${data.message}`); // Log to console for real-time view
+  console.log(`[LOG] ${data.eventType.toUpperCase()}: ${data.message}`);
   const logEntry = JSON.stringify(data) + "\n";
 
   // Usamos appendFile para adicionar ao log de forma assíncrona

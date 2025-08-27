@@ -149,7 +149,7 @@ function endGame(winners: Player[]) {
     message: logMessage,
   });
 
-  // Incrementa o contador de vitórias para os vencedores
+  // Contador de vitórias para os vencedores
   winners.forEach((winner) => {
     const playerInGame = players.find((p) => p.id === winner.id);
     if (playerInGame) {
@@ -189,10 +189,10 @@ function checkForWinner(): boolean {
     const winners = players.filter((p) => p.score === highestScore);
     if (winners.length > 0) {
       endGame(winners);
-      return true; // O jogo terminou
+      return true;
     }
   }
-  return false; // O jogo continua
+  return false;
 }
 
 function startNewRound() {
@@ -206,7 +206,7 @@ function startNewRound() {
     return;
   }
 
-  broadcast({ action: "game_stop", reason: "" }); // Reseta a UI do cliente para a próxima rodada
+  broadcast({ action: "game_stop", reason: "" });
 
   broadcast({
     action: "chat_message",
@@ -278,16 +278,15 @@ function startGame() {
 
   players.forEach((p) => (p.score = 0));
 
-  //pontuação máxima (ex: 15 pontos por jogador na partida)
+  //pontuação máxima 15 pontos por jogador na partida
   maxScore = players.length * 15;
 
-  // 3. Cria e embaralha a fila de desenho
   playerQueue = [...players];
   for (let i = playerQueue.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [playerQueue[i], playerQueue[j]] = [playerQueue[j], playerQueue[i]];
   }
-  drawerIndex = -1; // Começa em -1 para que o primeiro jogador seja o índice 0
+  drawerIndex = -1;
 
   logEvent({
     timestamp: new Date().toISOString(),

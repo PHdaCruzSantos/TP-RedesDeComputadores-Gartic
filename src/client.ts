@@ -204,11 +204,11 @@ connectBtn.addEventListener("click", () => {
   }
 
   const wsUrl = prompt(
-    "Por favor, insira o endereço do servidor WebSocket (wss://...)",
+    "Por favor, insira o endereço do servidor WebSocket (ws:// ou wss://)...",
     ""
   );
-  if (!wsUrl || !wsUrl.startsWith("wss://")) {
-    alert("Endereço de WebSocket inválido. Deve começar com wss://");
+  if (!wsUrl || (!wsUrl.startsWith("ws://") && !wsUrl.startsWith("wss://"))) {
+    alert("Endereço de WebSocket inválido. Deve começar com ws:// ou wss://");
     return;
   }
 
